@@ -51,6 +51,7 @@ USAGE:
       var allowTypo = options && options.allowTypo!==undefined ? options.allowTypo
         : instanceOptions && instanceOptions.allowTypo!==undefined ? instanceOptions.allowTypo
         : true
+      var getValueFn = options && options.getValueFn || getValue
       var algorithm = allowTypo ? fuzzysort.algorithm : fuzzysort.algorithmNoTypo
       var resultsLen = 0; var limitedCount = 0
       var targetsLen = targets.length
@@ -66,7 +67,7 @@ USAGE:
           var objResults = new Array(keysLen)
           for (var keyI = keysLen - 1; keyI >= 0; --keyI) {
             var key = keys[keyI]
-            var target = getValue(obj, key)
+            var target = getValueFn(obj, key)
             if(!target) { objResults[keyI] = null; continue }
             if(!isObj(target)) target = fuzzysort.getPrepared(target)
 
@@ -88,7 +89,7 @@ USAGE:
       } else if(options && options.key) {
         var key = options.key
         for(var i = targetsLen - 1; i >= 0; --i) { var obj = targets[i]
-          var target = getValue(obj, key)
+          var target = getValueFn(obj, key)
           if(!target) continue
           if(!isObj(target)) target = fuzzysort.getPrepared(target)
 
@@ -144,6 +145,7 @@ USAGE:
         var allowTypo = options && options.allowTypo!==undefined ? options.allowTypo
           : instanceOptions && instanceOptions.allowTypo!==undefined ? instanceOptions.allowTypo
           : true
+        var getValueFn = options && options.getValueFn || getValue
         var algorithm = allowTypo ? fuzzysort.algorithm : fuzzysort.algorithmNoTypo
         var resultsLen = 0; var limitedCount = 0
         function step() {
@@ -162,7 +164,7 @@ USAGE:
               var objResults = new Array(keysLen)
               for (var keyI = keysLen - 1; keyI >= 0; --keyI) {
                 var key = keys[keyI]
-                var target = getValue(obj, key)
+                var target = getValueFn(obj, key)
                 if(!target) { objResults[keyI] = null; continue }
                 if(!isObj(target)) target = fuzzysort.getPrepared(target)
 
@@ -191,7 +193,7 @@ USAGE:
           } else if(options && options.key) {
             var key = options.key
             for(; iCurrent >= 0; --iCurrent) { var obj = targets[iCurrent]
-              var target = getValue(obj, key)
+              var target = getValueFn(obj, key)
               if(!target) continue
               if(!isObj(target)) target = fuzzysort.getPrepared(target)
 
